@@ -1,0 +1,863 @@
+<!doctype html>
+<html>
+
+
+<!-- Mirrored from www.smartpixel.tech/smartmed/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 20 Nov 2020 13:38:20 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <style>
+        body{
+            margin:0;
+            color:#444;
+            background-color:#98c2c2;
+            font:300 18px/18px Roboto, sans-serif;
+            transition:background .4s ease-in-out 0s;
+        }
+        *,:after,:before{box-sizing:border-box}
+        {background-color: #039BE5;}
+        .pull-left{float:left}
+        .pull-right{float:right}
+        .clearfix:after,.clearfix:before{content:'';display:table}
+        .clearfix:after{clear:both;display:block}
+        
+        .calendar{width:300px;font-size:100%;margin:50px auto 0;perspective:1000px;cursor:default;position:relative}
+        .calendar .header{height:100px;position:relative;color:#fff}
+        .calendar .header .text{position:absolute;top:0;left:0;right:0;bottom:0;background-color:#308ff0;padding:15px;transform:rotateX(90deg);transform-origin:bottom;backface-visibility:hidden;transition:.4s ease-in-out 0s;box-shadow:0 6px 20px 0 rgba(0,0,0,.19), 0 8px 17px 0 rgba(0,0,0,.2);opacity:0}
+        .calendar .header .text>span{text-align:center;padding:26px;display:block}
+        .calendar .header.active .text{transform:rotateX(0deg);opacity:1}
+        .months{width:100%;height:280px;position:relative}
+        .months .hr{height:1px;margin:15px 0;background:#ccc}
+        .month{padding:15px;width:inherit;height:inherit;background:#fff;position:absolute;backface-visibility:hidden;transition:all .4s ease-in-out 0s;box-shadow:0 6px 20px 0 rgba(0,0,0,.19),0 8px 17px 0 rgba(0,0,0,.2)}
+        .months[data-flow="left"] .month{transform:rotateY(-180deg)}
+        .months[data-flow="right"] .month{transform:rotateY(180deg)}
+        .table{width:100%;font-size:10px;font-weight:400;display:table}
+        .table .row{display:table-row}
+        .table .row.head{color:#308ff0;text-transform:uppercase}
+        .table .row .cell{width:14.28%;padding:5px;text-align:center;display:table-cell}
+        .table .row .cell.disable{color:#ccc}
+        .table .row .cell span{display:block;width:28px;height:28px;line-height:28px;transition:color,background .4s ease-in-out 0s}
+        .table .row .cell.active span{color:#fff;background-color:#308ff0}
+        .months .month[data-active="true"]{transform:rotateY(0)}
+        .header [data-action]{color:inherit;position:absolute;top:50%;margin-top:-20px;width:40px;height:40px;z-index:1;opacity:0;transition:all .4s ease-in-out 0s}
+        .header [data-action]>i{width:20px;height:20px;display:block;position:absolute;left:50%;top:50%;margin-top:-10px;margin-left:-10px}
+        .header [data-action]>i:before,.header [data-action]>i:after{top:50%;margin-top:-1px;content:'';position:absolute;height:2px;width:20px;border-top:2px solid;border-radius:2px}
+        .header [data-action*="prev"]{left:15px}
+        .header [data-action*="next"]{right:15px}
+        .header [data-action*="prev"]>i:before,.header [data-action*="prev"]>i:after{left:0}
+        .header [data-action*="prev"]>i:before{top:3px;transform:rotate(-45deg)}
+        .header [data-action*="prev"]>i:after{top:auto;bottom:3px;transform:rotate(45deg)}
+        .header [data-action*="next"]>i:before,.header [data-action*="next"]>i:after{right:0}
+        .header [data-action*="next"]>i:before{top:auto;bottom:3px;transform:rotate(-45deg)}
+        .header [data-action*="next"]>i:after{top:3px;transform:rotate(45deg)}
+        .header.active [data-action]{opacity:1}
+        /*.calendar.body[data-action="false"]{background-color:#2bff00}*/
+        
+        [data-theme="jan"]{background-color:#90CAF9}
+        [data-theme="jan"] .row.head{color:#1E88E5}
+        [data-theme="jan"] .header .text,
+        [data-theme="jan"] .table .row .cell.active span{background-color:#1E88E5}
+        
+        [data-theme="feb"]{background-color:#81D4FA}
+        [data-theme="feb"] .row.head{color:#039BE5}
+        [data-theme="feb"] .header .text,
+        [data-theme="feb"] .table .row .cell.active span{background-color:#039BE5}
+        
+        [data-theme="mar"]{background-color:#80CBC4}
+        [data-theme="mar"] .row.head{color:#00897B}
+        [data-theme="mar"] .header .text,
+        [data-theme="mar"] .table .row .cell.active span{background-color:#00897B}
+        
+        [data-theme="apr"]{background-color:#C5E1A5}
+        [data-theme="apr"] .row.head{color:#7CB342}
+        [data-theme="apr"] .header .text,
+        [data-theme="apr"] .table .row .cell.active span{background-color:#7CB342}
+        
+        [data-theme="may"]{background-color:#FFE082}
+        [data-theme="may"] .row.head{color:#FFB300}
+        [data-theme="may"] .header .text,
+        [data-theme="may"] .table .row .cell.active span{background-color:#FFB300}
+        
+        [data-theme="jun"]{background-color:#FFAB91}
+        [data-theme="jun"] .row.head{color:#F4511E}
+        [data-theme="jun"] .header .text,
+        [data-theme="jun"] .table .row .cell.active span{background-color:#F4511E}
+        
+        [data-theme="jul"]{background-color:#CE93D8}
+        [data-theme="jul"] .row.head{color:#8E24AA}
+        [data-theme="jul"] .header .text,
+        [data-theme="jul"] .table .row .cell.active span{background-color:#8E24AA}
+        
+        [data-theme="aug"]{background-color:#B39DDB}
+        [data-theme="aug"] .row.head{color:#5E35B1}
+        [data-theme="aug"] .header .text,
+        [data-theme="aug"] .table .row .cell.active span{background-color:#5E35B1}
+        
+        [data-theme="sep"]{background-color:#EF9A9A}
+        [data-theme="sep"] .row.head{color:#E53935}
+        [data-theme="sep"] .header .text,
+        [data-theme="sep"] .table .row .cell.active span{background-color:#E53935}
+        
+        [data-theme="oct"]{background-color:#CE93D8}
+        [data-theme="oct"] .row.head{color:#8E24AA}
+        [data-theme="oct"] .header .text,
+        [data-theme="oct"] .table .row .cell.active span{background-color:#8E24AA}
+        
+        [data-theme="nov"]{background-color:#BCAAA4}
+        [data-theme="nov"] .row.head{color:#6D4C41}
+        [data-theme="nov"] .header .text,
+        [data-theme="nov"] .table .row .cell.active span{background-color:#6D4C41}
+        
+        [data-theme="dec"]{background-color:#B0BEC5}
+        [data-theme="dec"] .row.head{color:#546E7A}
+        [data-theme="dec"] .header .text,
+        [data-theme="dec"] .table .row .cell.active span{background-color:#546E7A}
+        </style>
+
+    <title>SanteK </title>
+
+    <!-- FAVICON AND APPLE TOUCH -->
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-180x180.png">
+    <meta name="msapplication-TileImage" content="mstile.png">
+    <meta name="msapplication-TileColor" content="#02a9ff">
+    <meta name="theme-color" content="#02a9ff">
+
+    <!-- FONTS -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic">
+
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="assets/fonts/fontawesome/css/font-awesome.min.css">
+
+    <!-- JUSTICE ICONS -->
+    <link rel="stylesheet" href="assets/fonts/smartmed-icons/css/smartmed-icons.min.css">
+
+    <!-- FANCYBOX -->
+    <link rel="stylesheet" href="assets/plugins/fancybox/jquery.fancybox.min.css">
+
+    <!-- OWL CAROUSEL -->
+    <link rel="stylesheet" href="assets/plugins/owl-carousel/owl.carousel.min.css">
+
+    <!-- YOUTUBE PLAYER -->
+    <link rel="stylesheet" href="assets/plugins/ytplayer/css/jquery.mb.ytplayer.min.html">
+
+    <!-- ANIMATIONS -->
+    <link rel="stylesheet" href="assets/plugins/animations/animate.min.css">
+
+    <!-- CUSTOM & PAGES STYLE -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/pages-style.css">
+
+    <!-- THEME OPTIONS -->
+    <link rel="stylesheet" href="assets/plugins/theme-options/theme-options.css">
+
+    <!-- ALTERNATIVE STYLES -->
+    <link rel="stylesheet" href="#" data-style="styles">
+
+
+</head>
+
+<body class="sticky-header header-classic footer-parallax">
+
+    <div id="main-container">
+
+        <!-- HEADER -->
+        <header id="header">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <!-- LOGO -->
+                        <div id="logo">
+                            <a href="index-2.html">
+                                <img src="assets/images/logo.png" alt="">
+                            </a>
+                        </div><!-- LOGO -->
+
+                    </div><!-- col -->
+                    <div class="col-md-9">
+
+                        <!-- MENU -->
+                        <nav>
+
+                            <a class="mobile-menu-button" href="#"><i class="fa fa-bars"></i></a>
+
+                            <ul class="menu clearfix" id="menu">
+                                <li class="dropdown">
+                                    <a href="index-2.html">Acceuil</a>
+                                    <ul>
+                                        <li><a class="waves" href="index-2.html">Acceuil 1</a></li>
+                                        <li><a class="waves" href="index-3.html">Acceuil 2</a></li>
+                                        <li><a class="waves" href="index-4.html">Acceuil 3</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="about.html">A propos</a>
+                                    <ul>
+                                        <li><a class="waves" href="about.html">A propos 1</a></li>
+                                        <li><a class="waves" href="about-2.html">A propos 2</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown active">
+                                    <a href="services.html">Evenements</a>
+                                    <ul>
+                                        <li><a class="waves" href="services.html">Participer</a></li>
+                                        <li><a class="waves" href="services-2.html">Action de don</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="team.html">Produits</a>
+                                    <ul>
+                                        <li><a class="waves" href="team.html">Chris Martin</a></li>
+                                        <li><a class="waves" href="team.html">Marisa Carter</a></li>
+                                        <li><a class="waves" href="team.html">John William</a></li>
+                                        <li><a class="waves" href="team.html">Martha Davis</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="news.html">Articles</a>
+                                    <ul>
+                                        <li><a class="waves" href="news.html">News right sidebar</a></li>
+                                        <li><a class="waves" href="news-2.html">News left sidebar</a></li>
+                                        <li><a class="waves" href="news-3.html">News no sidebar</a></li>
+                                        <li><a class="waves" href="news-single.html">News single</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="contact.html">Contactez nous</a>
+                                    <ul>
+                                        <li><a class="waves" href="contact.html">Contact 1</a></li>
+                                        <li><a class="waves" href="contact-2.html">Contact 2</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </nav>
+
+                    </div><!-- col -->
+                </div><!-- row -->
+            </div><!-- container -->
+
+        </header><!-- HEADER -->
+
+
+        <!-- PAGE CONTENT -->
+        <div id="page-content">
+
+            <div id="page-header" class="parallax" data-stellar-background-ratio="0.3"
+                 style="background-image: url(images/backgrounds/page-header-2.jpg);">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <h1>Participer à un évenements</h1>
+
+                        </div><!-- col -->
+                    </div><!-- row -->
+                </div><!-- container -->
+
+            </div><!-- page-header -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="headline text-center">
+
+                            <h6>soyons actifs !</h6>
+                            <h2>Evenements sociaux et médicaux</h2>
+
+                        </div><!-- headline -->
+
+                    </div><!-- col -->
+                </div><!-- row -->
+            </div><!-- container -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="image-box">
+
+                            <div class="image-box-thumbnail">
+                                <img src="images/services/image-1.jpg" alt="">
+                            </div><!-- image-box-thumbnail -->
+
+                            <h4>Octobre rose</h4>
+
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque odio, pulvinar ut urna ut venenatis.</p>
+
+                        </div><!-- image-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-4">
+
+                        <div class="image-box">
+
+                            <div class="image-box-thumbnail">
+                                <img src="images/services/image-2.jpg" alt="">
+                            </div><!-- image-box-thumbnail -->
+
+                            <h4>Conférance médicale</h4>
+
+                            <p>Mauris finibus eros et purus imperdiet, et blandit neque tincidunt. Nulla facilisi in elementum sed duis.</p>
+
+                        </div><!-- image-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-4">
+
+                        <div class="image-box">
+
+                            <div class="image-box-thumbnail">
+                                <img src="images/services/image-3.jpg" alt="">
+                            </div><!-- image-box-thumbnail -->
+
+                            <h4>Evenement de don</h4>
+
+                            <p>Integer sit amet pharetra nibh. Donec hendrerit ligula eget urna porta, finibus auctor tortor tincidunt.</p>
+
+                        </div><!-- image-box -->
+
+                    </div><!-- col -->
+                </div><!-- row -->
+            </div><!-- container -->
+
+            <section class="full-section dark-section parallax" id="section-5" data-stellar-background-ratio="0.3">
+
+                <div class="full-section-overlay-color"></div>
+
+                <div class="full-section-container">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="headline text-center">
+
+                                    <h6>Nos actions</h6>
+                                    <h2>Spécialités impliqués</h2>
+
+                                </div><!-- headline -->
+
+                            </div><!-- col -->
+                        </div><!-- row -->
+                    </div><!-- container -->
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="tabs vertical-tabs">
+
+                                    <ul class="nav nav-tabs">
+                                        <li><a class="active waves" href="#tab-6-1" data-toggle="tab">Internal Medicine</a></li>
+                                        <li><a class="waves" href="#tab-6-2" data-toggle="tab">Emergency medicine</a></li>
+                                        <li><a class="waves" href="#tab-6-3" data-toggle="tab">Dental surgery</a></li>
+                                        <li><a class="waves" href="#tab-6-4" data-toggle="tab">Plastic surgery</a></li>
+                                        <li><a class="waves" href="#tab-6-5" data-toggle="tab">Orthopedic surgery</a></li>
+                                        <li><a class="waves" href="#tab-6-6" data-toggle="tab">Cardiology</a></li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="tab-6-1">
+
+                                            <h2>Internal Medicine</h2>
+
+                                            <br>
+
+                                            <p>Duis non volutpat arcu, eu mollis tellus. Sed finibus aliquam neque sit amet sodales.
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla maximus pellentesque velit,
+                                                quis consequat nulla efficitur at. Maecenas sed massa tristique.Duis non volutpat arcu,
+                                                eu mollis tellus.</p>
+
+                                            <p>Phasellus gravida, nisi ut consectetur fermentum, massa felis lobortis nulla, quis egestas
+                                                purus ex id felis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cum sociis
+                                                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent non quam
+                                                aliquam, vestibulum diam at, aliquet ex. Phasellus tincidunt ultricies neque.</p>
+
+                                        </div><!-- tab-pane -->
+                                        <div class="tab-pane fade" id="tab-6-2">
+
+                                            <h2>Emergency medicine</h2>
+
+                                            <br>
+
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elementum, orci eu posuere
+                                                volutpat, augue arcu pellentesque diam, et condimentum lacus enim non est. Ut at egestas tortor.
+                                                Nunc consequat ut ligula ut ultricies. Ut in risus eget orci molestie blandit id a purus.</p>
+
+                                            <p>Phasellus gravida, nisi ut consectetur fermentum, massa felis lobortis nulla, quis egestas
+                                                purus ex id felis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cum sociis
+                                                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent non quam
+                                                aliquam, vestibulum diam at, aliquet ex. Phasellus tincidunt ultricies neque.</p>
+
+                                        </div><!-- tab-pane -->
+                                        <div class="tab-pane fade" id="tab-6-3">
+
+                                            <h2>Dental surgery</h2>
+
+                                            <br>
+
+                                            <p>Duis aliquam libero id magna mollis, sed aliquam lectus sollicitudin. Curabitur sed sodales
+                                                urna. Ut commodo dui eget mattis dapibus. Aliquam commodo semper quam, eget cursus lacus.
+                                                estibulum pretium sed lorem et vehicula. Maecenas quis tellus erat. Phasellus hendrerit nulla
+                                                ac ante rhoncus, ac lacinia justo condimentum. Ut luctus nunc id nulla mollis.</p>
+
+                                            <p>Duis sed hendrerit tellus, eu rhoncus erat. Nullam sit amet sapien in lacus vestibulum
+                                                ullamcorper. Sed fringilla vulputate ligula malesuada fermentum. Morbi metus sem, sodales nec
+                                                aliquam quis, fringilla eget sem.</p>
+
+                                        </div><!-- tab-pane -->
+                                        <div class="tab-pane fade" id="tab-6-4">
+
+                                            <h2>Plastic surgery</h2>
+
+                                            <br>
+
+                                            <p>Suspendisse ornare, risus vel tristique suscipit, elit lectus volutpat ipsum, eget rhoncus
+                                                nibh elit a ligula. Aenean non faucibus sem. Nulla vitae tortor rhoncus, sollicitudin neque non,
+                                                finibus risus.</p>
+
+                                            <p>Integer odio dolor, venenatis vitae pretium sed, scelerisque id ligula. Nam consequat, magna
+                                                non convallis scelerisque, eros lectus efficitur arcu, ac mollis ligula neque et neque.</p>
+
+                                            <p>Donec id posuere dolor, in elementum nibh. Nulla suscipit tincidunt risus, aliquam sollicitudin
+                                                odio mollis nec. Fusce scelerisque rutrum lobortis.</p>
+
+                                        </div><!-- tab-pane -->
+                                        <div class="tab-pane fade" id="tab-6-5">
+
+                                            <h2>Orthopedic surgery</h2>
+
+                                            <br>
+
+                                            <p>Suspendisse ornare, risus vel tristique suscipit, elit lectus volutpat ipsum, eget rhoncus nibh
+                                                elit a ligula. Aenean non faucibus sem. Nulla vitae tortor rhoncus, sollicitudin neque non, finibus
+                                                risus. Integer odio dolor, venenatis vitae pretium sed, scelerisque id ligula. Nam consequat, magna
+                                                non convallis scelerisque, eros lectus efficitur arcu, ac mollis ligula neque et neque. Donec id
+                                                posuere dolor, in elementum nibh. Nulla suscipit tincidunt risus.</p>
+
+                                            <p>Donec nec ante tempus, condimentum velit luctus, interdum justo. Nullam et facilisis urna. Proin
+                                                eget ex ante. Donec luctus ultricies nibh at sodales. In quis hendrerit felis. Nunc vulputate purus
+                                                ut erat ullamcorper venenatis.</p>
+
+                                        </div><!-- tab-pane -->
+                                        <div class="tab-pane fade" id="tab-6-6">
+
+                                            <h2>Cardiology</h2>
+
+                                            <br>
+
+                                            <p>Integer consequat, tortor eget viverra finibus, ante est consequat odio, vel blandit tellus dolor
+                                                a arcu. In ex felis, scelerisque quis lacinia sit amet, molestie a nunc. Maecenas non imperdiet odio,
+                                                luctus aliquam diam. Ut sit amet elit gravida mauris.</p>
+
+                                            <p>Praesent facilisis dolor sed ipsum gravida, ac fringilla massa iaculis. Aliquam erat volutpat.
+                                                Quisque cursus tellus id vulputate aliquam. Phasellus nisi libero, dictum vitae pellentesque ut,
+                                                accumsan at erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+                                            <p>Duis in nulla ut nibh semper viverra semper at urna. Mauris et ipsum semper, malesuada elit et,
+                                                condimentum arcu. </p>
+
+                                        </div><!-- tab-pane -->
+                                    </div><!-- tab-content -->
+
+                                </div><!-- tabs -->
+
+                            </div><!-- col -->
+                        </div><!-- row -->
+                    </div><!-- container -->
+
+                </div><!-- full-section-container -->
+            </section><!-- full-section -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="headline text-center">
+
+                            <h6>Best medical solutions</h6>
+                            <h2>Les évenements</h2>
+
+                        </div><!-- headline -->
+
+                    </div><!-- col -->
+                </div><!-- row -->
+            </div><!-- container -->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="service-box style-1 wow fadeInUp">
+
+                            <i class="smartmed-icon-lungs"></i>
+
+                            <div class="service-box-content">
+
+                                <h4>Des marathons</h4>
+
+                                <p>Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Pellen tesque vitae
+                                    dui interdum, rhoncus velit ipsum enim sed est.</p>
+
+                            </div><!-- service-box-content -->
+
+                        </div><!-- service-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="service-box style-1 wow fadeInUp" data-wow-delay="0.1s">
+
+                            <i class="smartmed-icon-first-aid-kit-2"></i>
+
+                            <div class="service-box-content">
+
+                                <h4>don d'organes</h4>
+
+                                <p>Etiam eu nulla eget ligula mollis faucibus. Pellentesque habitant morbi
+                                    tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+
+                            </div><!-- service-box-content -->
+
+                        </div><!-- service-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="service-box style-1 wow fadeInUp" data-wow-delay="0.2s">
+
+                            <i class="smartmed-icon-nuclear"></i>
+
+                            <div class="service-box-content">
+
+                                <h4>traitement</h4>
+
+                                <p>Morbi aliquam augue velit, id dapibus elit accumsan ut. Pellentesque a sem sed metus
+                                    fringilla posuere eu ac metus ex non sapien.</p>
+
+                            </div><!-- service-box-content -->
+
+                        </div><!-- service-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="service-box style-1 wow fadeInUp">
+
+                            <i class="smartmed-icon-teeth"></i>
+
+                            <div class="service-box-content">
+
+                                <h4>Visites des écoles</h4>
+
+                                <p>Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Pellen tesque vitae
+                                    dui interdum, rhoncus velit ipsum enim sed est.</p>
+
+                            </div><!-- service-box-content -->
+
+                        </div><!-- service-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="service-box style-1 wow fadeInUp" data-wow-delay="0.1s">
+
+                            <i class="smartmed-icon-cardiogram-4"></i>
+
+                            <div class="service-box-content">
+
+                                <h4>tentes médicaux</h4>
+
+                                <p>Etiam eu nulla eget ligula mollis faucibus. Pellentesque habitant morbi
+                                    tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+
+                            </div><!-- service-box-content -->
+
+                        </div><!-- service-box -->
+
+                    </div><!-- col -->
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="service-box style-1 wow fadeInUp" data-wow-delay="0.2s">
+
+                            <i class="smartmed-icon-bones"></i>
+
+                            <div class="service-box-content">
+
+                                <h4>collecte d'aides</h4>
+
+                                <p>Morbi aliquam augue velit, id dapibus elit accumsan ut. Pellentesque a sem sed metus
+                                    fringilla posuere eu ac metus ex non sapien.</p>
+
+                            </div><!-- service-box-content -->
+
+                        </div><!-- service-box -->
+
+                    </div><!-- col -->
+                </div><!-- row -->
+            </div><!-- container -->
+
+            <br><br>
+            <div id="page-header" class="parallax" data-stellar-background-ratio="0.3"
+            style="background-image: url(images/backgrounds/page-header-2.jpg);">
+
+           <div class="container">
+               <div class="row">
+                   <div class="col-md-12">
+
+                       <h2 style="color:white">consulter un évenement</h2>
+
+                   </div><!-- col -->
+               </div><!-- row -->
+           </div><!-- container -->
+
+       </div><!-- page-header -->
+
+        </div><!-- PAGE CONTENT -->
+        <div class="calendar">
+            <div class="header">
+                <a data-action="prev-month" href="javascript:void(0)" title="Previous Month"><i></i></a>
+                <div class="text" data-render="month-year"></div>
+                <a data-action="next-month" href="javascript:void(0)" title="Next Month"><i></i></a>
+            </div>
+            <div class="months" data-flow="left">
+                <div class="month month-a">
+                    <div class="render render-a"></div>
+                </div>
+                <div class="month month-b">
+                    <div class="render render-b"></div>
+                </div>
+            </div>
+            <script>
+                var Calendar = function(t) {
+                    this.divId = t.RenderID ? t.RenderID : '[data-render="calendar"]', this.DaysOfWeek = t.DaysOfWeek ? t.DaysOfWeek : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], this.Months = t.Months ? t.Months : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                    var e = new Date;
+                    this.CurrentMonth = e.getMonth(), this.CurrentYear = e.getFullYear();
+                    var r = t.Format;
+                    this.f = "string" == typeof r ? r.charAt(0).toUpperCase() : "M"
+                };
+                Calendar.prototype.nextMonth = function() {
+                    11 == this.CurrentMonth ? (this.CurrentMonth = 0, this.CurrentYear = this.CurrentYear + 1) : this.CurrentMonth = this.CurrentMonth + 1, this.divId = '[data-active="false"] .render', this.showCurrent()
+                }, Calendar.prototype.prevMonth = function() {
+                    0 == this.CurrentMonth ? (this.CurrentMonth = 11, this.CurrentYear = this.CurrentYear - 1) : this.CurrentMonth = this.CurrentMonth - 1, this.divId = '[data-active="false"] .render', this.showCurrent()
+                }, Calendar.prototype.previousYear = function() {
+                    this.CurrentYear = this.CurrentYear - 1, this.showCurrent()
+                }, Calendar.prototype.nextYear = function() {
+                    this.CurrentYear = this.CurrentYear + 1, this.showCurrent()
+                }, Calendar.prototype.showCurrent = function() {
+                    this.Calendar(this.CurrentYear, this.CurrentMonth)
+                }, Calendar.prototype.checkActive = function() {
+                    1 == document.querySelector(".months").getAttribute("class").includes("active") ? document.querySelector(".months").setAttribute("class", "months") : document.querySelector(".months").setAttribute("class", "months active"), "true" == document.querySelector(".month-a").getAttribute("data-active") ? (document.querySelector(".month-a").setAttribute("data-active", !1), document.querySelector(".month-b").setAttribute("data-active", !0)) : (document.querySelector(".month-a").setAttribute("data-active", !0), document.querySelector(".month-b").setAttribute("data-active", !1)), setTimeout(function() {
+                        document.querySelector(".calendar .header").setAttribute("class", "header active")
+                    }, 200), document.querySelector("body").setAttribute("data-theme", this.Months[document.querySelector('[data-active="true"] .render').getAttribute("data-month")].toLowerCase())
+                }, Calendar.prototype.Calendar = function(t, e) {
+                    "number" == typeof t && (this.CurrentYear = t), "number" == typeof t && (this.CurrentMonth = e);
+                    var r = (new Date).getDate(),
+                        n = (new Date).getMonth(),
+                        a = (new Date).getFullYear(),
+                        o = new Date(t, e, 1).getDay(),
+                        i = new Date(t, e + 1, 0).getDate(),
+                        u = 0 == e ? new Date(t - 1, 11, 0).getDate() : new Date(t, e, 0).getDate(),
+                        s = "<span>" + this.Months[e] + " &nbsp; " + t + "</span>",
+                        d = '<div class="table">';
+                    d += '<div class="row head">';
+                    for (var c = 0; c < 7; c++) d += '<div class="cell">' + this.DaysOfWeek[c] + "</div>";
+                    d += "</div>";
+                    for (var h, l = dm = "M" == this.f ? 1 : 0 == o ? -5 : 2, v = (c = 0, 0); v < 6; v++) {
+                        d += '<div class="row">';
+                        for (var m = 0; m < 7; m++) {
+                            if ((h = c + dm - o) < 1) d += '<div class="cell disable">' + (u - o + l++) + "</div>";
+                            else if (h > i) d += '<div class="cell disable">' + l++ + "</div>";
+                            else {
+                                d += '<div class="cell' + (r == h && this.CurrentMonth == n && this.CurrentYear == a ? " active" : "") + '"><span>' + h + "</span></div>", l = 1
+                            }
+                            c % 7 == 6 && h >= i && (v = 10), c++
+                        }
+                        d += "</div>"
+                    }
+                    d += "</div>", document.querySelector('[data-render="month-year"]').innerHTML = s, document.querySelector(this.divId).innerHTML = d, document.querySelector(this.divId).setAttribute("data-date", this.Months[e] + " - " + t), document.querySelector(this.divId).setAttribute("data-month", e)
+                }, window.onload = function() {
+                    var t = new Calendar({
+                        RenderID: ".render-a",
+                        Format: "M"
+                    });
+                    t.showCurrent(), t.checkActive();
+                    var e = document.querySelectorAll(".header [data-action]");
+                    for (i = 0; i < e.length; i++) e[i].onclick = function() {
+                        if (document.querySelector(".calendar .header").setAttribute("class", "header"), "true" == document.querySelector(".months").getAttribute("data-loading")) return document.querySelector(".calendar .header").setAttribute("class", "header active"), !1;
+                        var e;
+                        document.querySelector(".months").setAttribute("data-loading", "true"), this.getAttribute("data-action").includes("prev") ? (t.prevMonth(), e = "left") : (t.nextMonth(), e = "right"), t.checkActive(), document.querySelector(".months").setAttribute("data-flow", e), document.querySelector('.month[data-active="true"]').addEventListener("webkitTransitionEnd", function() {
+                            document.querySelector(".months").removeAttribute("data-loading")
+                        }), document.querySelector('.month[data-active="true"]').addEventListener("transitionend", function() {
+                            document.querySelector(".months").removeAttribute("data-loading")
+                        })
+                    }
+                };
+                </script>
+        </div>
+    
+        <br><br> <br> <br>
+
+        <!-- FOOTER -->
+        <footer id="footer-container">
+
+            <div id="footer">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="widget widget-text">
+
+                                <div class="text-center">
+
+                                    <p><img src="assets/images/logo.png" alt=""></p>
+                                    <p class="text-uppercase">Best medical solutions</p>
+
+                                </div>
+
+                            </div><!-- widget-text -->
+
+                            <div class="widget widget-contact">
+
+                                <ul class="inline">
+                                    <li>
+                                        <i class="fa fa-map-marker"></i>
+                                        4453 Meadow Lane, San Jose, CA 95134
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-phone"></i>
+                                        315-411-8716
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-envelope-o"></i>
+                                        <a href="mailto:info@smart-pixel.xyz">info@smart-pixel.xyz</a>
+                                    </li>
+                                </ul>
+
+                            </div><!-- widget-contact -->
+
+                            <div class="widget widget-pages">
+
+                                <ul class="inline">
+                                    <li><a href="#">Acceuil</a></li>
+                                    <li><a href="#">A propos</a></li>
+                                    <li><a href="#">Evenements</a></li>
+                                    <li><a href="#">Produits</a></li>
+                                    <li><a href="#">Articles</a></li>
+                                    <li><a href="#">Contactez nous</a></li>
+                                </ul>
+
+                            </div><!-- widget-pages -->
+
+                            <div class="widget widget-text">
+
+                                <div>
+
+                                    <p class="copyright">
+                                        <small>Template by <a href="#">SmartPixel</a> &copy; All rights reserved</small>
+                                    </p>
+
+                                </div>
+
+                            </div><!-- widget-text -->
+
+                        </div><!-- col -->
+                    </div><!-- row -->
+                </div><!-- container -->
+
+            </div><!-- footer -->
+
+        </footer><!-- FOOTER -->
+
+    </div><!-- MAIN CONTAINER -->
+
+
+    <!-- SCROLL UP -->
+    <a id="scroll-up" class="waves"><i class="fa fa-angle-up"></i></a>
+
+
+    <!-- THEME OPTIONS -->
+    <div id="theme-options"></div>
+
+
+    <!-- jQUERY -->
+    <script src="assets/plugins/jquery/jquery-2.2.4.min.js"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="assets/bootstrap/js/popper.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- VIEWPORT -->
+    <script src="assets/plugins/viewport/jquery.viewport.min.js"></script>
+
+    <!-- MENU -->
+    <script src="assets/plugins/menu/hoverintent.min.js"></script>
+    <script src="assets/plugins/menu/superfish.min.js"></script>
+
+    <!-- FANCYBOX -->
+    <script src="assets/plugins/fancybox/jquery.fancybox.min.js"></script>
+
+    <!-- OWL CAROUSEL -->
+    <script src="assets/plugins/owl-carousel/owl.carousel.min.js"></script>
+
+    <!-- PARALLAX -->
+    <script src="assets/plugins/parallax/jquery.stellar.min.js"></script>
+
+    <!-- ISOTOPE -->
+    <script src="assets/plugins/isotope/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/plugins/isotope/isotope.pkgd.min.js"></script>
+
+    <!-- CONTACT FORM VALIDATE & SUBMIT -->
+    <script src="assets/plugins/validate/jquery.validate.min.js"></script>
+    <script src="assets/plugins/submit/jquery.form.min.js"></script>
+
+    <!-- GOOGLE MAPS -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwJB5U3ZU5nnV3ta4t1VSz92zQi_3Xmmo"></script>
+    <script src="assets/plugins/googlemaps/gmap3.min.js"></script>
+
+    <!-- CHARTS -->
+    <script src="assets/plugins/charts/jquery.easypiechart.min.js"></script>
+
+    <!-- COUNTER -->
+    <script src="assets/plugins/counter/jquery.simplecounter.min.js"></script>
+
+    <!-- INSTAFEED -->
+    <script src="assets/plugins/instafeed/instafeed.min.js"></script>
+
+    <!-- TWITTER -->
+    <script src="assets/plugins/twitter/twitterfetcher.min.js"></script>
+
+    <!-- YOUTUBE PLAYER -->
+    <script src="assets/plugins/ytplayer/jquery.mb.ytplayer.min.html"></script>
+
+    <!-- COUNTDOWN -->
+    <script src="assets/plugins/countdown/jquery.countdown.min.js"></script>
+
+    <!-- ANIMATIONS -->
+    <script src="assets/plugins/animations/wow.min.js"></script>
+
+    <!-- THEME OPTIONS -->
+    <script src="assets/plugins/theme-options/jquery.cookie.min.js"></script>
+    <script src="assets/plugins/theme-options/theme-options.js"></script>
+
+    <!-- CUSTOM JS -->
+    <script src="assets/js/custom.js"></script>
+
+</body>
+
+
+<!-- Mirrored from www.smartpixel.tech/smartmed/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 20 Nov 2020 13:38:29 GMT -->
+</html>

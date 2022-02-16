@@ -1,0 +1,50 @@
+	<html>
+<head>
+  <title>Page de paiement</title>
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>    <link href="../../pages/calendar.php">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+<body class="ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar">
+
+<!--------------------------------------payement--------------------------------------------------->
+  <div id="bouton-paypal"></div>
+  <script>
+    paypal.Button.render({
+      env: 'sandbox', // Ou 'production',
+      commit: true, // Affiche le bouton  "Payer maintenant"
+      style: {
+        color: 'gold', // ou 'blue', 'silver', 'black'
+        size: 'responsive' // ou 'small', 'medium', 'large'
+        // Autres options de style disponibles ici : https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/customize-button/
+      },
+      payment: function(data, actions) {
+        /* 
+         * Création du paiement
+         */
+        console.log('paiement créé');
+      },
+      onAuthorize: function(data, actions) {
+        /* 
+         * Exécution du paiement 
+         */
+      },
+      onCancel: function(data, actions) {
+        /* 
+         * L'acheteur a annulé le paiement
+         */
+      },
+      onError: function(err) {
+        /* 
+         * Une erreur est survenue durant le paiement 
+         */
+      }
+    }, '#bouton-paypal');
+  </script>
+  <!-----------------------------------------------END PAIEME?T----------------------------------------------->
+     
+    </body>
+
+<!-- Mirrored from androthemes.com/themes/html/medjestic/pages/doctor-schedule/add-schedule.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 20 Nov 2020 13:45:29 GMT -->
+</html>
